@@ -27,6 +27,8 @@
         <localstack.version>1.21.3</localstack.version>
         <spring-cloud-aws.version>3.4.0</spring-cloud-aws.version>
         <spring-boot-configuration-processor.version>3.5.6</spring-boot-configuration-processor.version>
+        <springdoc-openapi.version>2.8.14</springdoc-openapi.version>
+        <springdoc-openapi-plugin.version>1.5</springdoc-openapi-plugin.version>
     </properties>
 
     <distributionManagement>
@@ -89,6 +91,18 @@
             </dependency>
 
             <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
+                <version>${springdoc-openapi.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <version>${springdoc-openapi.version}</version>
+            </dependency>
+
+            <dependency>
                 <groupId>org.wiremock.integrations</groupId>
                 <artifactId>wiremock-spring-boot</artifactId>
                 <version>${wiremock.version}</version>
@@ -114,6 +128,22 @@
     </dependencyManagement>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>application.yml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>application.yml</exclude>
+                </excludes>
+            </resource>
+        </resources>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -149,6 +179,11 @@
                             </exclude>
                         </excludes>
                     </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.springdoc</groupId>
+                    <artifactId>springdoc-openapi-maven-plugin</artifactId>
+                    <version>${springdoc-openapi-plugin.version}</version>
                 </plugin>
             </plugins>
         </pluginManagement>
