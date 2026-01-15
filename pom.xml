@@ -1,0 +1,371 @@
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>kektor.innowise.gallery</groupId>
+    <artifactId>gallery-bom</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <name>gallery-bom</name>
+    <packaging>pom</packaging>
+    <description>Gallery app bom</description>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.5.6</version>
+        <relativePath/>
+    </parent>
+
+    <properties>
+        <java.version>25</java.version>
+        <org.mapstruct.version>1.6.3</org.mapstruct.version>
+        <lombok-mapstruct-binding.version>0.2.0</lombok-mapstruct-binding.version>
+        <jjwt.version>0.13.0</jjwt.version>
+        <testcontainers.version>2.0.1</testcontainers.version>
+        <wiremock.version>3.10.6</wiremock.version>
+        <localstack.version>1.21.3</localstack.version>
+        <spring-cloud-aws.version>3.4.0</spring-cloud-aws.version>
+        <spring-boot-configuration-processor.version>3.5.6</spring-boot-configuration-processor.version>
+        <springdoc-openapi.version>2.8.14</springdoc-openapi.version>
+        <springdoc-openapi-plugin.version>1.5</springdoc-openapi-plugin.version>
+        <jacoco-maven-plugin.version>0.8.14</jacoco-maven-plugin.version>
+        <sonar.organization>cannibal-kektor</sonar.organization>
+    </properties>
+
+    <distributionManagement>
+        <repository>
+            <id>github</id>
+            <name>Gallery GitHub Packages Repo</name>
+            <url>https://maven.pkg.github.com/cannibal-kektor/gallery-repo</url>
+        </repository>
+    </distributionManagement>
+
+    <dependencyManagement>
+        <dependencies>
+
+            <dependency>
+                <groupId>kektor.innowise.gallery</groupId>
+                <artifactId>gallery-security-starter</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.projectlombok</groupId>
+                <artifactId>lombok</artifactId>
+                <version>${lombok.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${org.mapstruct.version}</version>
+                <scope>provided</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-api</artifactId>
+                <version>${jjwt.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-impl</artifactId>
+                <version>${jjwt.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>io.jsonwebtoken</groupId>
+                <artifactId>jjwt-jackson</artifactId>
+                <version>${jjwt.version}</version>
+                <scope>runtime</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>io.awspring.cloud</groupId>
+                <artifactId>spring-cloud-aws-dependencies</artifactId>
+                <version>${spring-cloud-aws.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
+                <version>${springdoc-openapi.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <version>${springdoc-openapi.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>org.wiremock.integrations</groupId>
+                <artifactId>wiremock-spring-boot</artifactId>
+                <version>${wiremock.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>testcontainers-bom</artifactId>
+                <version>${testcontainers.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <dependency>
+                <groupId>org.testcontainers</groupId>
+                <artifactId>localstack</artifactId>
+                <version>${localstack.version}</version>
+                <scope>test</scope>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+                <includes>
+                    <include>application.yml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>false</filtering>
+                <excludes>
+                    <exclude>application.yml</exclude>
+                </excludes>
+            </resource>
+        </resources>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <annotationProcessorPaths>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                            </path>
+                            <path>
+                                <groupId>org.mapstruct</groupId>
+                                <artifactId>mapstruct-processor</artifactId>
+                                <version>${org.mapstruct.version}</version>
+                            </path>
+                            <path>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok-mapstruct-binding</artifactId>
+                                <version>${lombok-mapstruct-binding.version}</version>
+                            </path>
+                        </annotationProcessorPaths>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                    <configuration>
+                        <excludes>
+                            <exclude>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                            </exclude>
+                        </excludes>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.springdoc</groupId>
+                    <artifactId>springdoc-openapi-maven-plugin</artifactId>
+                    <version>${springdoc-openapi-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-plugin</artifactId>
+                    <configuration>
+                        <argLine>${surefire.jacoco.args}</argLine>
+                        <skipTests>${skip.surefire.tests}</skipTests>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>integration-test</goal>
+                                <goal>verify</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <argLine>${failsafe.jacoco.args}</argLine>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${jacoco-maven-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>prepare-unit-agent</id>
+                            <goals>
+                                <goal>prepare-agent</goal>
+                            </goals>
+                            <configuration>
+                                <destFile>${project.build.directory}/jacoco-unit.exec</destFile>
+                                <propertyName>surefire.jacoco.args</propertyName>
+                            </configuration>
+                        </execution>
+
+                        <execution>
+                            <id>unit-report</id>
+                            <phase>test</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                            <configuration>
+                                <dataFile>${project.build.directory}/jacoco-unit.exec</dataFile>
+                                <outputDirectory>${project.reporting.outputDirectory}/jacoco-unit</outputDirectory>
+                            </configuration>
+                        </execution>
+
+                        <execution>
+                            <id>prepare-integration-agent</id>
+                            <goals>
+                                <goal>prepare-agent-integration</goal>
+                            </goals>
+                            <configuration>
+                                <destFile>${project.build.directory}/jacoco-it.exec</destFile>
+                                <propertyName>failsafe.jacoco.args</propertyName>
+                            </configuration>
+                        </execution>
+
+                        <execution>
+                            <id>integration-report</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>report-integration</goal>
+                            </goals>
+                            <configuration>
+                                <dataFile>${project.build.directory}/jacoco-it.exec</dataFile>
+                                <outputDirectory>${project.reporting.outputDirectory}/jacoco-it</outputDirectory>
+                            </configuration>
+                        </execution>
+
+                        <execution>
+                            <id>merge-unit-and-integration-reports</id>
+                            <phase>post-integration-test</phase>
+                            <goals>
+                                <goal>merge</goal>
+                            </goals>
+                            <configuration>
+                                <destFile>${project.build.directory}/jacoco-merged.exec</destFile>
+                                <fileSets>
+                                    <fileSet>
+                                        <directory>${project.build.directory}</directory>
+                                        <includes>
+                                            <include>jacoco-unit.exec</include>
+                                            <include>jacoco-it.exec</include>
+                                        </includes>
+                                    </fileSet>
+                                </fileSets>
+                            </configuration>
+                        </execution>
+
+                        <execution>
+                            <id>merged-report</id>
+                            <phase>verify</phase>
+                            <goals>
+                                <goal>report</goal>
+                            </goals>
+                            <configuration>
+                                <dataFile>${project.build.directory}/jacoco-merged.exec</dataFile>
+                                <outputDirectory>${project.reporting.outputDirectory}/jacoco-merged</outputDirectory>
+                            </configuration>
+                        </execution>
+
+                    </executions>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>generate-openapi</id>
+
+            <properties>
+                <openapi-filename>openapi.yaml</openapi-filename>
+                <openapi-docs-url/>
+            </properties>
+
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <configuration>
+                            <skip>true</skip>
+                        </configuration>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-failsafe-plugin</artifactId>
+                        <configuration>
+                            <skip>true</skip>
+                        </configuration>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-maven-plugin</artifactId>
+                        <configuration>
+                            <profiles>
+                                <profile>smoke</profile>
+                            </profiles>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>start</goal>
+                                    <goal>stop</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.springdoc</groupId>
+                        <artifactId>springdoc-openapi-maven-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>generate-openapi-docs</id>
+                                <phase>integration-test</phase>
+                                <goals>
+                                    <goal>generate</goal>
+                                </goals>
+                                <configuration>
+                                    <apiDocsUrl>http://localhost:8080/${openapi-docs-url}</apiDocsUrl>
+                                    <outputFileName>${openapi-filename}</outputFileName>
+                                    <outputDir>${project.basedir}/src/main/resources/openapi</outputDir>
+                                    <skip>false</skip>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+
+</project>
